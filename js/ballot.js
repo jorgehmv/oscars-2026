@@ -290,13 +290,22 @@ function calculateScores() {
   }));
 }
 
-function shareCurrentState() {
+async function shareCurrentState() {
   const gameWithWinners = { ...currentGame, winners };
   const hash = encodeGameToHash(gameWithWinners);
   const url = `${location.origin}${location.pathname}#${hash}`;
-  navigator.clipboard.writeText(url).then(() => {
-    alert("Updated ballot URL copied to clipboard!");
-  });
+
+  try {
+    const resp = await fetch(
+      `https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`
+    );
+    const shortUrl = resp.ok ? await resp.text() : url;
+    await navigator.clipboard.writeText(shortUrl);
+    alert("Short URL copied to clipboard!");
+  } catch {
+    await navigator.clipboard.writeText(url);
+    alert("URL copied to clipboard!");
+  }
 }
 
 init();

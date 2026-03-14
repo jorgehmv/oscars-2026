@@ -235,11 +235,29 @@ function createGame() {
 
   const resultEl = document.getElementById("resultUrl");
   const shareUrlEl = document.getElementById("shareUrl");
-  shareUrlEl.innerHTML = `<a href="${url}" target="_blank">${url.length > 100 ? url.substring(0, 100) + "..." : url}</a>`;
   resultEl.dataset.url = url;
   resultEl.classList.add("visible");
 
+  shareUrlEl.innerHTML = `<span style="color:#888">Shortening URL...</span>`;
+  shortenUrl(url).then((shortUrl) => {
+    const displayUrl = shortUrl || url;
+    shareUrlEl.innerHTML = `<a href="${displayUrl}" target="_blank">${displayUrl}</a>`;
+    resultEl.dataset.url = displayUrl;
+  });
+
   renderGameList();
+}
+
+async function shortenUrl(longUrl) {
+  try {
+    const resp = await fetch(
+      `https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`
+    );
+    if (!resp.ok) return null;
+    return await resp.text();
+  } catch {
+    return null;
+  }
 }
 
 function copyUrl() {
