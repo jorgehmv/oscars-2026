@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Oscars 2026 Ballot</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="masthead">The 98th Academy Awards</div>
+      <h1><span class="gold">Oscars</span> 2026</h1>
+      <div class="subtitle">Admin</div>
+    </header>
+
+    <div class="password-gate" id="passwordGate">
+      <h2>Enter Password</h2>
+      <input type="password" id="passwordInput" placeholder="Password" autofocus>
+      <button onclick="checkPassword()">Enter</button>
+      <div class="error-msg" id="passwordError">Incorrect password</div>
+    </div>
+
+    <div class="admin-content" id="adminContent">
+      <h2 style="font-family: var(--font-serif); margin-bottom: 24px;">Create Ballot Game</h2>
+
+      <div class="form-group">
+        <label>Game Name</label>
+        <input type="text" id="gameName" placeholder="e.g. Jorge's Watch Party">
+      </div>
+
+      <div class="form-group">
+        <label>Predictions</label>
+        <textarea id="predictions" placeholder="Paste predictions here..."></textarea>
+        <div class="error-msg" id="parseError"></div>
+      </div>
+
+      <div class="form-actions">
+        <button onclick="createGame()">Create Game</button>
+        <button class="secondary" onclick="generateTemplate()">Copy Template</button>
+        <button class="secondary" onclick="showFormat()">Show Format</button>
+      </div>
+
+      <div class="result-url" id="resultUrl">
+        <p>Share this link with your group:</p>
+        <div class="url" id="shareUrl"></div>
+        <button style="margin-top: 12px; font-size: 12px; padding: 6px 12px;" onclick="copyUrl()">Copy URL</button>
+      </div>
+
+      <div class="existing-games" id="existingGames">
+        <h3>Existing Games</h3>
+        <ul class="game-list" id="gameList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/nominees.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

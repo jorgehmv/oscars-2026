@@ -1,0 +1,43 @@
+You are extracting Oscar ballot predictions from a photo of a hand-filled paper ballot.
+
+The ballot has checkboxes next to each nominee. The person has marked their picks by checking, circling, crossing, or filling in the box next to their chosen nominee — using pen, pencil, marker, or any writing instrument. Look for ANY mark that indicates a selection: checkmarks, X marks, filled boxes, circles, dots, highlights, or any other deliberate marking.
+
+For each category, identify which nominee has been marked/selected. If no nominee is clearly marked in a category, skip that category.
+
+Output the predictions in EXACTLY this format — one category per line, with the participant's name on the first line followed by a colon:
+
+ParticipantName:
+Best Picture: [selected nominee]
+Best Director: [selected person's last name or full name]
+Best Actor: [selected person's last name or full name]
+Best Actress: [selected person's last name or full name]
+Best Supporting Actor: [selected person's last name or full name]
+Best Supporting Actress: [selected person's last name or full name]
+Original Screenplay: [selected film]
+Adapted Screenplay: [selected film]
+Casting: [selected film]
+Editing: [selected film]
+Animated Feature: [selected film]
+Documentary Feature: [selected film]
+International Feature: [selected film]
+Production Design: [selected film]
+Costume Design: [selected film]
+Cinematography: [selected film]
+Makeup and Hairstyling: [selected film]
+Sound: [selected film]
+Visual Effects: [selected film]
+Original Score: [selected film]
+Original Song: [selected song title]
+Animated Short: [selected film]
+Documentary Short: [selected film]
+Live-Action Short: [selected film]
+
+IMPORTANT RULES:
+- Replace "ParticipantName" with the actual person's name if written on the ballot, otherwise use "Unknown"
+- For actor/actress/director categories, use just the person's name (the film will be matched automatically)
+- For film categories, use just the film title
+- For Original Song, use just the song title without the film in parentheses
+- Use the exact spelling from the ballot when possible
+- If a category has no clear selection, omit that line entirely
+- Do NOT add any commentary, explanations, or extra text — output ONLY the formatted predictions
+- If multiple ballots are in the image, separate each participant's predictions with a blank line
