@@ -53,46 +53,40 @@ Best Director: Chloé Zhao
 
 function parsePredictions(text) {
   const participants = [];
-  const blocks = text.split(/\n\s*\n/).filter((b) => b.trim());
+  const lines = text.split("\n").map((l) => l.trim());
 
-  for (const block of blocks) {
-    const lines = block
-      .split("\n")
-      .map((l) => l.trim())
-      .filter(Boolean);
-    if (lines.length === 0) continue;
+  let current = null;
+  for (const line of lines) {
+    if (!line) continue;
 
-    const nameMatch = lines[0].match(/^([^:]+):$/);
-    if (!nameMatch) {
-      throw new Error(`Expected participant name on line: "${lines[0]}"`);
+    const nameMatch = line.match(/^([^:]+):$/);
+    if (nameMatch && !matchCategory(nameMatch[1])) {
+      if (current) participants.push(current);
+      current = { name: nameMatch[1].trim(), picks: {} };
+      continue;
     }
 
-    const participant = {
-      name: nameMatch[1].trim(),
-      picks: {},
-    };
-
-    for (let i = 1; i < lines.length; i++) {
-      const colonIdx = lines[i].indexOf(":");
-      if (colonIdx === -1) continue;
-
-      const catInput = lines[i].substring(0, colonIdx).trim();
-      const pickInput = lines[i].substring(colonIdx + 1).trim();
-      if (!pickInput) continue;
-
-      const category = matchCategory(catInput);
-      if (!category) {
-        throw new Error(
-          `Unknown category: "${catInput}" on line: "${lines[i]}"`
-        );
-      }
-
-      const nominee = matchNominee(category, pickInput);
-      participant.picks[category.slug] = nominee || pickInput;
+    if (!current) {
+      throw new Error(`Expected participant name before: "${line}"`);
     }
 
-    participants.push(participant);
+    const colonIdx = line.indexOf(":");
+    if (colonIdx === -1) continue;
+
+    const catInput = line.substring(0, colonIdx).trim();
+    const pickInput = line.substring(colonIdx + 1).trim();
+    if (!pickInput) continue;
+
+    const category = matchCategory(catInput);
+    if (!category) {
+      throw new Error(`Unknown category: "${catInput}" on line: "${line}"`);
+    }
+
+    const nominee = matchNominee(category, pickInput);
+    current.picks[category.slug] = nominee || pickInput;
   }
+
+  if (current) participants.push(current);
 
   return participants;
 }
